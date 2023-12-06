@@ -30,6 +30,8 @@ designed and marketed specifically for exotic animals. In particular, the relays
 has switched the power off, but: the power just keeps on flowing - leading to the environment going absurdly over-humid. I
 have exhausted every supplier and seen this on *every available device* - from £25 to £250 (GBP). Sometimes the devices last
 a few months, more recently they've been lasting a matter of weeks or even days (which at least means I can send them back).
+Having to keep replacing and reconfiguring hygrostats is a huge inconvenience (even if they're often failing well inside of their
+warranty period, so it doesn't actually hurt me financially), and having the right conditions isn't ideal for the animals!
 
 And yes, I've had my electrical supply tested. And no, this isn't an issue with electrical devices operating in a humid
 environment: the only thing inside the vivarium is the sensor - the relay etc is external in a regular UK domestic environment.
