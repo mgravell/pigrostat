@@ -1,5 +1,6 @@
 # pigrostat
-A basic hygrostat implementation for pi pico, sht30 and relay hat, using MicroPython
+
+A basic hygrostat implementation for Pi Pico, SHT30 and relay hat, using MicroPython
 
 ## Status
 
@@ -37,7 +38,7 @@ environment: the only thing inside the vivarium is the sensor - the relay etc is
 
 tl;dr: Pi Pico with a SHT30 and relay kit; right now, purely experimental on a breadboard:
 
-![Pi Pico and SHT30 on breadboard, showing temperature and humidity on a basic display](img/breadboard.png)
+![Pi Pico and SHT30 on breadboard, showing temperature and humidity on a basic display](https://github.com/mgravell/pigrostat/blob/main/img/breadboard.jpg?raw=true)
 
 In frustration, I decided to see what I could do myself! I've tinkered with a Raspberry Pi in the past, and I have a *conceptual*
 understanding that the GPIO pins can be used to control things like sensors, but: I've never done this before - what the heck,
