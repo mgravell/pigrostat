@@ -1,0 +1,30 @@
+{
+  "delay": 1.0,
+
+  "sensor": {
+     "sda": 4,
+     "scl": 5,
+     "addr": 68,
+     "values": [
+       {
+         "name": "Temperature",
+         "relay": 6,
+         "on": 30,
+         "off": 35,
+       },
+       {
+         "name": "Humidity",
+         "relay": 7,
+         "on": 70,
+         "off": 75,
+       }
+     ]
+  },
+  "display": {
+    "width": 128,
+    "height": 32,
+    "sda": 0,
+    "scl": 1,
+    "freq": 400000
+  }
+}
