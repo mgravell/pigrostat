@@ -8,12 +8,16 @@
      "values": [
        {
          "name": "Temperature",
-         "relay": 6,
+         "label": "T",
+         "unit": "C",
+         "relay": null,
          "on": 30,
          "off": 35,
        },
        {
          "name": "Humidity",
+         "label": "H",
+         "unit": "%",
          "relay": 7,
          "on": 70,
          "off": 75,

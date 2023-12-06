@@ -9,7 +9,18 @@ f.close()
 
 onboardLED = Pin(25, Pin.OUT)
 
-display = None;
+class DebugDisplay:
+    def fill(self, x):
+        pass # no-op
+        
+    def show(self, ):
+        pass # no-op
+
+    def text(self, msg, x, y):
+        print(msg)
+
+display = DebugDisplay()
+
 if 'display' in config:
     print("Configuring display...")
     cfg = config["display"]
@@ -30,10 +41,11 @@ print(sensor)
 values = sensor["values"]
 print(f'Sensor has {len(values)} output values')
 for val in values:
-    print(f'Disabling {val["name"]} relay')
-    val["pin"] = Pin(val["relay"], Pin.OUT)
-    val["pin"].value(0)
-
+    if 'relay' in val:
+        if val["relay"] is None:
+            val.pop("relay")
+        else:
+            val["relay"] = Pin(val["relay"], Pin.OUT)
 
 print("Configuring sensor...")
 i2c_sensor=SoftI2C(sda=Pin(sensor["sda"]), scl=Pin(sensor["scl"]))
@@ -46,30 +58,47 @@ if sensor["addr"] in devices:
 else:
     print('No sensor detected with specified address')
 
+cpu = machine.ADC(4) # allows access to CPU temperature
+
 # main loop (note: no point running if we don't have a sensor)
 print('Running...')
 while sht is not None:
     # enable the device LED to show we're alive
     onboardLED.value(1)
     
-    if display is not None:
-        display.fill(0) # wipe and redraw
+    display.fill(0) # wipe and redraw
     
-    if sht is not None:
-        # read the values from the sensor
-        tuple = sht.measure()
-        if display is not None:
-            display.text(f'T: {round(tuple[0], 1)}C',0,0)
-            display.text(f'H: {round(tuple[1], 1)}%',0,12)
-    
-    if display is not None:
-        # read the ambient CPU temperature (ADC 4 is a slope showing temp,
-        # with defined gradient/origin; these numbers are from the spec)
-        ADC_voltage = cpu.read_u16() * (3.3 / (65536))
-        cputemp = 27 - (ADC_voltage - 0.706)/0.001721
+    # read the values from the sensor
+    tuple = sht.measure()
+    for idx, x in enumerate(values):
+        val = tuple[idx]
+        display.text(f'{x["label"]}: {round(val, 1)} {x["unit"]}', 0, idx * 12)
         
-        display.text(f'CPU: {round(cputemp, 1)}C',0,24)
-        display.show()
+        if 'relay' in x:
+            relay = x["relay"]
+            current = relay.value()
+            target = current # assume no change
+
+            # logic here is absurdly simple latch; we don't need to be clever
+            if current >= 0.9: # treat as on
+                if val >= x["off"]:
+                    target = 0
+            else:
+                if val <= x["on"]:
+                    target = 1
+                    
+            if target != current:
+                relay.value(target)
+                print(f'{x["name"]} now {relay.value()}')
+    
+    # read the ambient CPU temperature (ADC 4 is a slope showing temp,
+    # with defined gradient/origin; these numbers are from the spec)
+    # see: https://electrocredible.com/raspberry-pi-pico-temperature-sensor-tutorial/
+    ADC_voltage = cpu.read_u16() * (3.3 / (65536))
+    cputemp = 27 - (ADC_voltage - 0.706) / 0.001721
+    
+    display.text(f'CPU: {round(cputemp, 1)} C', 0, 24)
+    display.show()
     
     # pause for long enough to ensure the status LED is visible
     time.sleep(0.05)
@@ -80,4 +109,10 @@ while sht is not None:
     # wait a second (there's no point updating too frequently)
     time.sleep(config["delay"])
 
+# show exit condition
 print('Exit')
+for i in range(5):
+    onboardLED.value(1)
+    time.sleep(0.1)
+    onboardLED.value(0)
+    time.sleep(0.1)
