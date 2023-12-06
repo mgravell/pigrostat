@@ -4,7 +4,8 @@ A basic hygrostat implementation for Pi Pico, SHT30 and relay hat, using MicroPy
 
 ## Status
 
-This is a work-in-progress; right now, I can read and display the temperature and humidity; I have more bits on order!
+This is a work-in-progress; right now, I can read and display the temperature and humidity, and have basic control over
+relays; I have more bits on order!
 
 This is a hobby project for myself. It involves controlling external electrical devices, and the relays involved can work
 with low-voltage DC or mains-voltage AC; I am *very deliberately* not going to offer any advice on how you use this information,
