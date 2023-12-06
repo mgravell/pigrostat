@@ -8,10 +8,10 @@ This is a work-in-progress; right now, I can read and display the temperature an
 
 This is a hobby project for myself. It involves controlling external electrical devices, and the relays involved can work
 with low-voltage DC or mains-voltage AC; I am *very deliberately* not going to offer any advice on how you use this information,
-as no matter what I say, there will be gaps and I don't want to be sat in a court-room with someone saying
+as no matter what I say, there will be gaps and I don't want to be sat in a court-room with some lawyer saying
 
 > I put it to the court that you recklessly failed to tell my client that they couldn't use this device to control the lights in the shower,
-> and this failure on your part led to the fire that ultimately destroyed the family home, and ask the court to order compensation accordingly.
+> and this failure on your part led to the fire that ultimately destroyed the family home; we ask the court to order compensation accordingly.
 
 Seriously, this is a maker project; do your own due diligence and use common sense. If you don't know *exactly* what you're doing
 with electricity, maybe just buy off-the-shelf.
