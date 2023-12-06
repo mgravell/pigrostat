@@ -127,3 +127,7 @@ You can see the status of this in [/src](https://github.com/mgravell/pigrostat/b
 
 Thonny allows you to run arbitrary .py files on the device directly via the play button; to have a script run automatically when the controller boots,
 we simply save it as `main.py`.
+
+Right now the code is ... "functional" - which is to say: it mostly works, but it isn't elegant or well structured. When I know what it needs
+to actually *do*, I'll consider tidying it up some more, honest! Considering that I've never really been a Python person, "it mostly works"
+is not a bad place to start.
