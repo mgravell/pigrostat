@@ -53,7 +53,8 @@ or [here](https://thepihut.com/products/sht-30-mesh-protected-weather-proof-temp
 mostly for the single enclosed, heavy duty cable, which seems like a better choice for my scenario.
 
 I originally planned on using a Pi 4 Model B (upgrading to Pi 5 when available), but on a whim (and because it was the start of December),
-I also picked up the [Pi Pico H advent calendar](https://thepihut.com/products/maker-advent-calendar-includes-raspberry-pi-pico-h), which includes
+I also picked up the [Pi Pico H advent calendar](https://thepihut.com/products/maker-advent-calendar-includes-raspberry-pi-pico-h) for £40 (the
+Pi Pico itself is an astonishing £3.90 or £4.80 for the H variant, i.e. with headers (pins) attached), which includes
 a Pi Pico H and a range of additional bits - breadboard, wires, buttons, sensors, lights, a basic display, etc. I got this working with
 the SHT30 very quickly, reading and displaying the humidity and temperature, so now all we need is to control the power!
 
@@ -74,10 +75,30 @@ In addition to the essentials, I also have a few ideas for using bits from the a
 
 (note that some more advanced displays are available at reasonable prices with buttons built-in; this might be worth exploring)
 
+Finally, we will want to enclose the device - even if we limit ourselves to low DC voltages, we don't want random debris falling on either the relays
+or the Pico pins. Since I don't have a 3D printer, I'm looking at [things like this](https://www.switchelectronics.co.uk/pages/search-results-page?q=enclosure),
+but I need to see the final size before I order anything.
+
+## Additional hardware considerations
+
+I did not put a lot of thought into the choice of microcontroller; Pi Pico is *readily available*, well known, cheap, and seems a popular choice for hobbyists, but
+mostly it was simply "I've used Pi before, I have reasonable confidence that this will be accessible to a microcontroller n00b". A *wide range* of similar
+devices are available, in particular competing with the Arduino range. I haven't used Arduino (again: n00b), so perhaps
+[check thoughts like this](https://www.tomshardware.com/features/raspberry-pi-pico-vs-arduino). To emphasize, my personal decision making process was more
+"ooh, that looks like fun and something that might work, I'll get one of those", when I saw the advent calendar pack.
+
+The Pico H is not network enabled; that's fine for now, but if we want better reporting: the Pico WH has the same form-factor and pinout,
+but with 802.11 b/g/n WiFi and Bluetooth 5.2. Running at 133Mhz by default (overclockable) with two ARM Cortex-M0+ cores and 2MB flash memory, it is
+*more than* powerful enough to drive most typical controller scenarios. With 40 IO pins (26 usable for GPIO), we have lots of options for controlling devices -
+and if we need even more, the RP2040-PICO30 has the same form-factor and makes 30 pins usable for GPIO (sacrificing some redundant ground pins), and up to
+16MB flash memory (the maximum addressable via XIP on the device) - but since I2C allows multiple devices to share the same bus (and pins) by having
+different addresses, this usually isn't necessary. Different I2C device categories (sensors, displays, etc) usually have different default addresses
+(defined by the hardware), and some allow the address to be tweaked by shorting (jumper, etc) at the device.
+
 In theory multiple SHT30 sensors could be used to monitor multiple environments:
 
-- multiple sensors can *theoretically* be used on a single pair of GPIO pins by configuring the address of each, but this requires hardware shorting,
-  and isn't supported by all sensors
+- multiple identical sensors can *theoretically* share an I2C bus by changing the address, but not all SHT30 devices support this option (especially the
+  enclosed variants)
 - we can use separate sets of GPIO pins for independent I2C buses
 - we can use an [I2C Multiplexer](https://thepihut.com/products/adafruit-tca9548a-i2c-multiplexer) to indepndently access multiple I2C devices
   *with the same address* on a single bus
@@ -85,10 +106,6 @@ In theory multiple SHT30 sensors could be used to monitor multiple environments:
 I'll keep this option up my sleeve, but it doesn't seem useful unless I'm using [a lot more relays](https://thepihut.com/products/industrial-8-channel-relay-module-for-raspberry-pi-pico),
 and the length of the wire on most sensors makes it impractical (and prone to cable hell). Given the price of the components, in all honesty if I wanted that I'd probably just go with multiple
 entire Pico+sensor+relay setups.
-
-Finally, we will want to enclose the device - even if we limit ourselves to low DC voltages, we don't want random debris falling on either the relays
-or the Pico pins. Since I don't have a 3D printer, I'm looking at [things like this](https://www.switchelectronics.co.uk/pages/search-results-page?q=enclosure),
-but I need to see the final size before I order anything.
 
 ## The software
 
