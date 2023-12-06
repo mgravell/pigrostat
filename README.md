@@ -74,6 +74,18 @@ In addition to the essentials, I also have a few ideas for using bits from the a
 
 (note that some more advanced displays are available at reasonable prices with buttons built-in; this might be worth exploring)
 
+In theory multiple SHT30 sensors could be used to monitor multiple environments:
+
+- multiple sensors can *theoretically* be used on a single pair of GPIO pins by configuring the address of each, but this requires hardware shorting,
+  and isn't supported by all sensors
+- we can use separate sets of GPIO pins for independent I2C buses
+- we can use an [I2C Multiplexer](https://thepihut.com/products/adafruit-tca9548a-i2c-multiplexer) to indepndently access multiple I2C devices
+  *with the same address* on a single bus
+
+I'll keep this option up my sleeve, but it doesn't seem useful unless I'm using [a lot more relays](https://thepihut.com/products/industrial-8-channel-relay-module-for-raspberry-pi-pico),
+and the length of the wire on most sensors makes it impractical (and prone to cable hell). Given the price of the components, in all honesty if I wanted that I'd probably just go with multiple
+entire Pico+sensor+relay setups.
+
 Finally, we will want to enclose the device - even if we limit ourselves to low DC voltages, we don't want random debris falling on either the relays
 or the Pico pins. Since I don't have a 3D printer, I'm looking at [things like this](https://www.switchelectronics.co.uk/pages/search-results-page?q=enclosure),
 but I need to see the final size before I order anything.

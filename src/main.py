@@ -20,23 +20,25 @@ cpu = machine.ADC(4) # https://electrocredible.com/raspberry-pi-pico-temperature
 onboardLED = Pin(25, Pin.OUT)
 
 while True: # loop forever
-    # read from the sensor roughly once a second, flashing the
-    # onboard LED to show that we're still working
-    onboardLED.value(0)
-    time.sleep(1.0)
+    # enable the device LED to show we're alive
     onboardLED.value(1)
-    time.sleep(0.05)
     
     # read the values from the sensor
-    onboardLED.value(0)
     tuple = sht.measure()
     display.fill(0) # wipe and redraw
     display.text(f'T: {round(tuple[0], 1)}C',0,0)
     display.text(f'H: {round(tuple[1], 1)}%',0,12)
     
-    # read the ambient CPU temperature
+    # read the ambient CPU temperature (ADC 4 is a slope showing temp,
+    # with defined gradient/origin; these numbers are from the spec)
     ADC_voltage = cpu.read_u16() * (3.3 / (65536))
     cputemp = 27 - (ADC_voltage - 0.706)/0.001721
     
     display.text(f'CPU: {round(cputemp, 1)}C',0,24)
     display.show()
+    
+    # show that we're done thinking (thinking will appear as a flash)
+    onboardLED.value(0)
+    
+    # wait a second (there's no point updating too frequently)
+    time.sleep(1.0)
