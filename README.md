@@ -35,8 +35,6 @@ warranty period, so it doesn't actually hurt me financially), and having the rig
 
 And yes, I've had my electrical supply tested. And no, this isn't an issue with electrical devices operating in a humid
 environment: the only thing inside the vivarium is the sensor - the relay etc is external in a regular UK domestic environment.
-If I had to guess (I'm speculating here), I'm burning out the LED on the photocoupler, and they are connecting the power through
-COM and NC, meaning that if the LED fails: it will be forever on).
 
 ## The hardware
 
