@@ -20,7 +20,10 @@ try:
 
     try:
         led = machine.Pin.board.LED
+        led.on()
+        print(f'Using onboard LED: {led}')
     except:
+        print('Using dummy LED')
         led = DummyPin()
         
     class DebugDisplay:
@@ -33,20 +36,46 @@ try:
         def text(self, msg, x, y):
             print(msg)
 
-    display = DebugDisplay()
-
-    if 'display' in config:
-        print("Configuring display...")
-        cfg = config["display"]
-        i2c_display=I2C(0, sda=Pin(cfg["sda"]), scl=Pin(cfg["scl"]), freq=cfg["freq"])
-        time.sleep(1) # allow things to initialize
-        print("Scanning for display I2C...")
-        devices = i2c_display.scan()
-        if len(devices) == 1:
-            print(f'Discovered at {hex(devices[0])}')
-            display = SSD1306_I2C(cfg["width"], cfg["height"], i2c_display)
+    def getI2C(bridges, sda, scl, addr, label):
+        key = (sda, scl)
+        if key in bridges:
+            print(f"Reusing I2C for {key}")
+            i2c = bridges[key]
         else:
-            print('Display is configured but was not found')
+            print(f"Creating new I2C bridge for {key}")
+            # the sensor fails with hardware I2C, but works with SoftI2C; I don't know why
+            i2c = SoftI2C(sda=Pin(sda), scl=Pin(scl))
+            time.sleep(1) # allow things to initialize
+            bridges[key] = i2c
+
+        print(f"Scanning for I2C device {hex(addr)} ({addr})...")
+        devices = i2c.scan()
+        print(f'Available devices: {devices}')
+        
+        if addr in devices:
+            print(f'Device ({label}) found')
+            return i2c
+
+        print(f'Device ({label}) not found')
+        return None
+    
+    display = DebugDisplay()
+    bridges = dict() # I2C could be shared between pins; we'll re-use
+    
+    if 'display' in config:
+        try:
+            print("Configuring display...")
+            cfg = config["display"]
+            i2c = getI2C(bridges, cfg["sda"], cfg["scl"], cfg["addr"], 'display')
+            
+            if i2c is not None:
+                display = SSD1306_I2C(cfg["width"], cfg["height"], i2c, cfg["addr"])
+                display.fill(0)
+                display.text('Initializing...', 0, 0)
+                display.show()                
+        except:
+            print('Fault configuring display')
+            raise
     else:
         print('Display not configured')
 
@@ -62,15 +91,10 @@ try:
                 val["relay"] = Pin(val["relay"], Pin.OUT)
 
     print("Configuring sensor...")
-    i2c_sensor=SoftI2C(sda=Pin(sensor["sda"]), scl=Pin(sensor["scl"]))
-    print("Scanning for sensor...")
-    devices = i2c_sensor.scan()
+    i2c = getI2C(bridges, sensor["sda"], sensor["scl"], sensor["addr"], 'sensor')
     sht = None
-    if sensor["addr"] in devices:
-        print(f'Sensor detected, configuring...')
-        sht=sht30.SHT30(i2c=i2c_sensor, i2c_address=sensor["addr"])
-    else:
-        print('No sensor detected with specified address')
+    if i2c is not None:
+        sht=sht30.SHT30(i2c=i2c, i2c_address=sensor["addr"])
 
     cpu = machine.ADC(4) # allows access to CPU temperature
 
@@ -78,7 +102,7 @@ try:
     print('Running...')
     while sht is not None:
         # enable the device LED to show we're alive
-        led.on(1)
+        led.on()
 
         display.fill(0) # wipe and redraw
 
@@ -86,8 +110,8 @@ try:
         tuple = sht.measure()
         for idx, x in enumerate(values):
             val = tuple[idx]
-            display.text(f'{x["label"]}: {round(val, 1)} {x["unit"]}', 0, idx * 12)
-
+            
+            status = ""
             if 'relay' in x:
                 relay = x["relay"]
                 current = relay.value()
@@ -100,10 +124,15 @@ try:
                 else:
                     if val <= x["on"]:
                         target = 1
+                
+                status = "on" if target >= 0.9 else "off"
+                    
 
                 if target != current:
                     relay.value(target)
                     print(f'{x["name"]} now {relay.value()}')
+                    
+            display.text(f'{x["label"]}: {round(val, 1)} {x["unit"]} {status}', 0, idx * 12)
 
         # read the ambient CPU temperature (ADC 4 is a slope showing temp,
         # with defined gradient/origin; these numbers are from the spec)
@@ -126,7 +155,7 @@ finally:
     # show exit condition
     try:
         display.fill(0) # wipe and redraw
-        display.text('Exited', 0, 0)
+        display.text('Terminated', 0, 0)
         display.show()
     except:
         pass

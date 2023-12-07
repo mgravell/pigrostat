@@ -2,8 +2,8 @@
   "delay": 1.0,
 
   "sensor": {
-     "sda": 4,
-     "scl": 5,
+     "sda": 0,
+     "scl": 1,
      "addr": 68,
      "values": [
        {
@@ -29,6 +29,6 @@
     "height": 32,
     "sda": 0,
     "scl": 1,
-    "freq": 400000
+    "addr": 60,
   }
 }
