@@ -9,7 +9,7 @@
        {
          "name": "Temperature",
          "label": "T",
-         "unit": "C",
+         "unit": "°C",
          "relay": null,
          "on": 30,
          "off": 35,
@@ -25,6 +25,13 @@
      ]
   },
   "display": {
+    "type": "lcd1602",
+    "sda": 0,
+    "scl": 1,
+    "addr": 39,
+  },
+  "_display": {
+    "type": "ssd1306",
     "width": 128,
     "height": 32,
     "sda": 0,

@@ -1,21 +1,43 @@
 # pigrostat
 
-A basic hygrostat implementation for Pi Pico, SHT30 and relay hat, using MicroPython
+A basic hygrostat implementation for Pi Pico, SHT30 and relay HAT, using MicroPython
 
 ## Status
 
-This is a work-in-progress; right now, I can read and display the temperature and humidity, and have basic control over
-relays; I have more bits on order!
-
-This is a hobby project for myself. It involves controlling external electrical devices, and the relays involved can work
+This is a work-in-progress, and is a hobby project for myself. It involves controlling external electrical devices, and the relays involved can work
 with low-voltage DC or mains-voltage AC; I am *very deliberately* not going to offer any advice on how you use this information,
-as no matter what I say, there will be gaps and I don't want to be sat in a court-room with some lawyer saying
+as no matter what I say, there will be gaps and I don't want to be sat in a court-room with some lawyer saying:
 
 > I put it to the court that you recklessly failed to tell my client that they couldn't use this device to control the lights in the shower,
 > and this failure on your part led to the fire that ultimately destroyed the family home; we ask the court to order compensation accordingly.
 
-Seriously, this is a maker project; do your own due diligence and use common sense. If you don't know *exactly* what you're doing
+Seriously, this is a "maker" project; do your own due diligence and use common sense. If you don't know *exactly* what you're doing
 with electricity, maybe just buy off-the-shelf.
+
+Status:
+
+- [x] Pico H provisioned
+- [x] Basic status LED and debug output
+- [x] Communication over I2C with SHT30 sensor
+- [x] Communication over I2C with relay kit
+- [x] Basic external configuration
+- [x] Display over I2C with SSD1306
+- [x] Display over I2C with LCD1602
+- [x] I2C shared bridge logic
+- [x] Main work loop and latch logic
+- [x] In-situ "on/off" comparison vs off-the-shelf hygrostat
+- [ ] Code refactor (in particular: object model separate to configuration model)
+- [ ] Enclosure and power
+  - (ordered)
+- [ ] Networking
+  - [ ] Pico WH provisioned
+    - (ordered)
+  - [ ] Network configuration
+  - [ ] Reliable time
+  - [ ] Status broadcast
+  - [ ] Server/listener
+  - [ ] Remote configure
+- [ ] Timer functionality (requires reliable time)
 
 ## Motivation
 
