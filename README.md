@@ -126,7 +126,7 @@ In theory multiple SHT30 sensors could be used to monitor multiple environments:
 - we can use an [I2C Multiplexer](https://thepihut.com/products/adafruit-tca9548a-i2c-multiplexer) to indepndently access multiple I2C devices
   *with the same address* on a single bus
 
-I'll keep this option up my sleeve, but it doesn't seem useful unless I'm using [a lot more relays](https://thepihut.com/products/industrial-8-channel-relay-module-for-raspberry-pi-pico),
+I'll keep this option up my sleeve, but it doesn't seem useful unless I'm using [a lot more relays](https://www.amazon.com/dp/B084BR4TDH),
 and the length of the wire on most sensors makes it impractical (and prone to cable hell). Given the price of the components, in all honesty if I wanted that I'd probably just go with multiple
 entire Pico+sensor+relay setups.
 
