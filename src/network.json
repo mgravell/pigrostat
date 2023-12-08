@@ -1,0 +1,7 @@
+{
+    "ssid": "yournetwork",
+    "password": "please",
+    "hostname": "pigrostat",
+    "send_ip": "A.B.C.D",
+    "send_port": 62212
+}

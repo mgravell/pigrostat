@@ -30,10 +30,9 @@ Status:
 - [ ] Enclosure and power
   - (ordered)
 - [ ] Networking
-  - [ ] Pico WH provisioned
-    - (ordered)
-  - [ ] Network configuration
-  - [ ] Reliable time
+  - [x] Pico WH provisioned
+  - [x] Network configuration
+  - [x] Reliable time
   - [ ] Status broadcast
   - [ ] Server/listener
   - [ ] Remote configure
