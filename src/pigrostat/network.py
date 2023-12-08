@@ -29,7 +29,9 @@ try:
         time.sleep(1)
     
     if wlan.isconnected():
-        print(f'Connected successfully; attempting to set network time...')
+        print(f'Connected successfully: {wlan.ifconfig()}')
+        
+        print('Attempting to set network time...')
         
         retries = 10
         while retries > 0:
@@ -47,11 +49,13 @@ try:
         send_ip = config["send_ip"]
         send_port = config["send_port"]
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        print(f'Sending to {send_ip}:{send_port}')
         while True:
             led.on()
             try:
                 message = "Test message"
-                sock.sendto(message.encode(), (send_ip, send_port))
+                result = sock.sendto(message.encode(), (send_ip, send_port))
+                print(f'Sent: {result}')
             except:
                 print ("Failure sending UDP packet")
                 raise

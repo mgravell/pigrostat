@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34310.174
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "listener", "src\listener\listener.csproj", "{36FD82EB-F2A2-4133-9AEA-7BC6D1226D66}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{4716F92A-756B-41EF-A19E-F973D7108CAA}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pigrostat", "src\pigrostat\pigrostat.csproj", "{DB0A0E98-4069-424B-B576-216B3480F194}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36FD82EB-F2A2-4133-9AEA-7BC6D1226D66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36FD82EB-F2A2-4133-9AEA-7BC6D1226D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36FD82EB-F2A2-4133-9AEA-7BC6D1226D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36FD82EB-F2A2-4133-9AEA-7BC6D1226D66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB0A0E98-4069-424B-B576-216B3480F194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB0A0E98-4069-424B-B576-216B3480F194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB0A0E98-4069-424B-B576-216B3480F194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB0A0E98-4069-424B-B576-216B3480F194}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8B47610A-CA37-41E2-A75E-2A56F661DF84}
+	EndGlobalSection
+EndGlobal
