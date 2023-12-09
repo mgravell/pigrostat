@@ -1,7 +1,10 @@
-import time, sht30, ujson
+import time, sht30, ujson, sensors, sys
 from machine import I2C, SoftI2C, Pin, ADC
 from ssd1306 import SSD1306_I2C
 from pico_i2c_lcd import I2cLcd
+
+print(sensors.Sensor.load())
+sys.exit()
 
 try:
     print("Loading configuration...")
