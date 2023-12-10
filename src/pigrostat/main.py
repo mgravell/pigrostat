@@ -80,6 +80,15 @@ try:
             i2c = bridges[key]
         else:
             print(f"Creating new I2C bridge for {key}")
+
+            # hardware I2C bridge seems less reliable; may times hardware_test.py
+            # will work fine with software, and utterly fail with hardware bridge
+            # note this may be sub-revision related; hardware I2C on Pico WH seems
+            # more reliable than hardware I2C on Pico H - or maybe I somehow destroyed
+            # the I2C controller by shorting bad pins, who knows!
+            i2c = SoftI2C(sda=Pin(sda), scl=Pin(scl))
+
+            """ # this would be nice, but is less reliable
             # Pico has two hardware I2C controllers; module 0 handles SDA 0/4/8/12/16/20,
             # module 1 handles SDA 2/6/10/14/18/26 (where SCL=SDA+1); try to use hardware
             try:
@@ -88,7 +97,7 @@ try:
             except ValueError:
                 print("Unable to use hardware I2C; trying software...")
                 i2c = SoftI2C(sda=Pin(sda), scl=Pin(scl))
-
+            """
             time.sleep(1) # allow things to initialize
             bridges[key] = i2c
 

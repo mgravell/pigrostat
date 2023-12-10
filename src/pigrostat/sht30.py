@@ -2,6 +2,7 @@
 # (github: https://github.com/rsc1975/micropython-sht30)
 #
 # modifications to support pi pico by "Roberthh"
+# (key changes: take I2C arg in __init__, allowing use of SoftI2C)
 # via https://forum.micropython.org/viewtopic.php?f=21&t=12900&sid=cea18d6e14c53784f6e70ef1f50837c7&start=10#p70260
 
 from machine import I2C, Pin
