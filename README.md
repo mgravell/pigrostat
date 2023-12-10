@@ -28,7 +28,10 @@ Status:
 - [x] In-situ "on/off" comparison vs off-the-shelf hygrostat
 - [ ] Code refactor (in particular: object model separate to configuration model)
 - [ ] Enclosure and power
-  - (ordered)
+  - [x] shell and cable access
+  - [ ] attach external device
+  - [ ] internal transformer
+  - [ ] mount components
 - [ ] Networking
   - [x] Pico WH provisioned
   - [x] Network configuration
