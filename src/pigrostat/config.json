@@ -1,10 +1,17 @@
 {
   "delay": 1.0,
 
-  "sensor": {
-     "sda": 0,
-     "scl": 1,
-     "addr": 68,
+  "sensors": [
+  {
+      "type": "random",
+      "min": 42,
+      "max": 60
+  },
+  {
+      "type": "sht30",
+      "sda": 0,
+      "scl": 1,
+      "addr": 68,
      "values": [
        {
          "name": "Temperature",
@@ -23,7 +30,7 @@
          "off": 75,
        }
      ]
-  },
+  }],
   "display": {
     "type": "lcd1602",
     "sda": 0,
