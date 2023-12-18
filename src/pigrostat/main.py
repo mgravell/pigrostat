@@ -27,6 +27,12 @@ try:
         print('Using dummy LED')
         led = DummyPin()
         
+    def HasLength(value):
+        try:
+            return len(value) >= 0
+        except:
+            return False;
+        
     class Display:
         def clear(self, hard = False):
             pass # no-op
@@ -73,6 +79,47 @@ try:
         def show(self):
             self.__ssd.show()
 
+    class Relay:
+        def __init__(self, pins):
+            if HasLength(pins):
+                self.__pins = []
+                for idx, pin in enumerate(pins):
+                    self.__pins.append(Pin(pin, Pin.OUT))
+            else:
+                self.__pins = [ Pin(pins, Pin.OUT) ]
+            self.__state = False
+            print(f'Relays: {self.__pins}')
+            
+        def value(self, newValue = None):
+            if newValue is None:
+                return self.__state
+            elif newValue is True:
+                self.on()
+            else:
+                self.off()
+            
+        def on(self):
+            if self.__state is True:
+                return
+            for idx, pin in enumerate(reversed(self.__pins)):
+                if idx != 0:
+                    print('Pausing between pins...')
+                    time.sleep(0.1)
+                print(f'Activating {pin}')
+                pin.on()
+            self.__state = True
+            
+        def off(self):
+            if self.__state is False:
+                return
+            for idx, pin in enumerate(self.__pins):
+                if idx != 0:
+                    print('Pausing between pins...')
+                    time.sleep(0.1)
+                print(f'Deactivating {pin}')
+                pin.off()
+            self.__state = False
+
     def getI2C(bridges, sda, scl, addr, label):
         key = (sda, scl)
         if key in bridges:
@@ -113,7 +160,7 @@ try:
         return None
 
     def statusString(val):
-        return "on" if val >= 0.8 else "off"
+        return "on" if val is True else "off"
     
     display = Display()
     bridges = dict() # I2C could be shared between pins; we'll re-use
@@ -147,7 +194,7 @@ try:
             if val["relay"] is None:
                 val.pop("relay")
             else:
-                val["relay"] = Pin(val["relay"], Pin.OUT)
+                val["relay"] = Relay(val["relay"])
 
     print("Configuring sensor...")
     i2c = getI2C(bridges, sensor["sda"], sensor["scl"], sensor["addr"], 'sensor')
@@ -185,12 +232,12 @@ try:
                         target = current # assume no change
 
                         # logic here is absurdly simple latch; we don't need to be clever
-                        if current >= 0.9: # treat as on
+                        if current is True:
                             if val >= x["off"]:
-                                target = 0
+                                target = False
                         else:
                             if val <= x["on"]:
-                                target = 1
+                                target = True
 
                         status = statusString(target)
 
