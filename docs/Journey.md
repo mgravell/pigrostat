@@ -188,15 +188,15 @@ So... what happened? I control every part of the system: *this is on me*. So I s
 It turns out that relays are prone to voltage transients. In particular, they are prone to a scenario where a
 voltage spike when *deactivating* can cause the relay to become stuck "on", thus not *actually* deactivating.
 
-The mosst common cause of this is an inductive load - i.e. something with coils. Im not an electical engineer, so
+The most common cause of this is an inductive load - i.e. something with coils. I'm not an electical engineer, so
 forgive any misrepresentation here, but this kind of inductor builds up up an electrical field. When you turn it
 "off", this electrical field collapses by pushing a voltage back around the circuit. But inductors are resistant to
 changes in current, so they want to keep pushing at that same current as before. Except you turned the switch off.
 
 From the perspective of the curcuit, an open switch isn't a true gap - it is instead a resistor with an unusually
 high resistance (keep in mind that at the moment we're deactivating the switch, this air gap can be very very small).
-And by ohms law, to maintain V=IR, if we have a fixed I and a large R: V is going to be large. It pushes back with
-a larger voltage than we expect, potentially causing a spark (and possibly even damage to the relay), and sometimes
+And by ohms law, to maintain V=IR, if we have a fixed I (recall: the inductor eants to maintain the same current) and a large R: V is going to be correspondingly large. It can push back with
+a noticeably larger voltage than we expect, potentially causing a spark (and possibly even damage to the relay), and sometimes
 (just sometimes): causes the relay to stick.
 
 So what can we do? That's where [a snubber](https://en.wikipedia.org/wiki/Snubber) comes into play; a snubber can be
@@ -205,7 +205,7 @@ else we can dissipate that voltage transient that *isn't* the switch. The power 
 so if it doesn't *have* to spark the air-gap, it won't. In a perfect world, we'd put this snubber over the inductor,
 but that isn't really available to us; putting it over the relay works almost as well.
 
-In the case of an RC snubber, we might still get some voltage leak, which isn't ideal. We can handle that by using
+In the case of an RC snubber, we might still get some voltage leak (i.e. with the relay "off", we still get some small fraction of the input voltage), which isn't ideal. We can handle that by using
 a linked pair of relays, with a small delay between them (100ms is massively overkill here). When turning off,
 we deactivate the relay covered by the snubber *first*, and let the snubber take the transient. This will leave a small
 voltage leaking through the capacitor, which we can kill with the second/master relay. Since we don't have an inductive
@@ -219,7 +219,7 @@ Of course... this does mean that *this entire thing* might have been solved with
 but if we'd have done that, *would I have had nearly this much fun?* I think not!
 
 More to the point: maybe folks selling smart controllers *that are likely to have an inductive load* (i.e. humidifiers):
-should take take to protect their relays from voltage transients from these loads! This seems like a simple step that
+should take care to protect their relays from voltage transients from these loads! This seems like a simple step that
 would prevent a *ton* of returns. Snubbers are cheap: this is not something you need to omit for cost-saving.
 
 ## Conclusion
