@@ -218,6 +218,10 @@ double-click of the relays activating in sequence.
 Of course... this does mean that *this entire thing* might have been solved with a £20 inline surge protector plug,
 but if we'd have done that, *would I have had nearly this much fun?* I think not!
 
+More to the point: maybe folks selling smart controllers *that are likely to have an inductive load* (i.e. humidifiers):
+should take take to protect their relays from voltage transients from these loads! This seems like a simple step that
+would prevent a *ton* of returns. Snubbers are cheap: this is not something you need to omit for cost-saving.
+
 ## Conclusion
 
 I learned a ton: about using microcontrollers, and about electricity. It has been a great little project!
