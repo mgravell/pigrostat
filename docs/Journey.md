@@ -190,12 +190,12 @@ voltage spike when *deactivating* can cause the relay to become stuck "on", thus
 
 The most common cause of this is an inductive load - i.e. something with coils. I'm not an electical engineer, so
 forgive any misrepresentation here, but this kind of inductor builds up up an electrical field. When you turn it
-"off", this electrical field collapses by pushing a voltage back around the circuit. But inductors are resistant to
+"off", this electrical field collapses by pushing a voltage back around the circuit until it has dissipated. But inductors are resistant to
 changes in current, so they want to keep pushing at that same current as before. Except you turned the switch off.
 
 From the perspective of the curcuit, an open switch isn't a true gap - it is instead a resistor with an unusually
 high resistance (keep in mind that at the moment we're deactivating the switch, this air gap can be very very small).
-And by ohms law, to maintain V=IR, if we have a fixed I (recall: the inductor eants to maintain the same current) and a large R: V is going to be correspondingly large. It can push back with
+And by ohms law, to maintain V=IR, if we have a fixed I (recall: the inductor wants to maintain the same current) and a large R: V is going to be correspondingly large. It can push back with
 a noticeably larger voltage than we expect, potentially causing a spark (and possibly even damage to the relay), and sometimes
 (just sometimes): causes the relay to stick.
 
