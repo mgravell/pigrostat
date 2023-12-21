@@ -195,7 +195,7 @@ changes in current, so they want to keep pushing at that same current as before.
 
 From the perspective of the curcuit, an open switch isn't a true gap - it is instead a resistor with an unusually
 high resistance (keep in mind that at the moment we're deactivating the switch, this air gap can be very very small).
-And by ohms law, to maintain V=IR, if we have a fixed I (recall: the inductor wants to maintain the same current) and a large R: V is going to be correspondingly large. It can push back with
+And by ohms law, to maintain *V=IR*, if we have a fixed *I* (recall: the inductor wants to maintain the same current) and a large *R*: then *V* is going to be correspondingly large. It can push back with
 a noticeably larger voltage than we expect, potentially causing a spark (and possibly even damage to the relay), and sometimes
 (just sometimes): causes the relay to stick.
 
