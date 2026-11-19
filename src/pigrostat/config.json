@@ -18,17 +18,17 @@
          "name": "Humidity",
          "label": "H",
          "unit": "%",
-         "relay": 7,
-         "on": 70,
-         "off": 75,
+         "relay": [7],
+         "on": 60,
+         "off": 65,
        }
      ]
   },
   "display": {
     "type": "lcd1602",
-    "sda": 0,
-    "scl": 1,
-    "addr": 39,
+    "sda": 4,
+    "scl": 5,
+    "addr": 63,
   },
   "_display": {
     "type": "ssd1306",

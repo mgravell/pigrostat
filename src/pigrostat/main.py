@@ -245,11 +245,14 @@ try:
                             relay.value(target)
                             print(f'{x["name"]} now {statusString(relay.value())}')
 
-                    unit = x["unit"].replace("°", chr(223)) # fix code-page
+                    unit = x["unit"]
+                    display.text(f'{x["label"]}: {round(val, 1)} {unit} {status}', 2)
+                    unit = unit.replace("°", chr(223)) # fix code-page
                     display.text(f'{x["label"]}: {round(val, 1)} {unit} {status}', idx)
                 except:
                     display.text(f'{x["label"]}: ERR', idx)
-
+                    # printf(f'{x["label"]}: ERR')
+                    
         # read the ambient CPU temperature (ADC 4 is a slope showing temp,
         # with defined gradient/origin; these numbers are from the spec)
         # see: https://electrocredible.com/raspberry-pi-pico-temperature-sensor-tutorial/
