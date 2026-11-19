@@ -1,5 +1,7 @@
-import time, sht30, ujson
+import time, sht30, ujson, machine
 from machine import I2C, SoftI2C, Pin, ADC
+from schedule import Schedule, TimeZone, format_minutes
+from netclock import NetClock, utc_now
 from ssd1306 import SSD1306_I2C
 from pico_i2c_lcd import I2cLcd
 
@@ -195,6 +197,30 @@ try:
                 val.pop("relay")
             else:
                 val["relay"] = Relay(val["relay"])
+        try:
+            val["schedule"] = Schedule(val, val["name"])
+        except Exception as e:
+            # print explicitly: the reboot in "finally" means we'd never see the traceback
+            print(f'Invalid thresholds/schedule: {e}')
+            display.simple("Config error")
+            raise
+        val["zone"] = None # last active zone, so we can log changes
+
+    # time of day is optional: without it (no network.json, plain Pico, NTP not
+    # synced yet) every value just uses its default "on"/"off"
+    clock_cfg = config.get("clock") or {}
+    timezone = TimeZone(clock_cfg)
+    trust_rtc = clock_cfg.get("trust_rtc", False) # dev only: e.g. RTC set by Thonny
+    netclock = NetClock.load()
+    if netclock is not None:
+        display.simple("Syncing time...")
+        netclock.sync()
+        display.clear(True)
+
+    def localMinutes():
+        if trust_rtc or (netclock is not None and netclock.synced()):
+            return timezone.local_minutes(utc_now())
+        return None
 
     print("Configuring sensor...")
     i2c = getI2C(bridges, sensor["sda"], sensor["scl"], sensor["addr"], 'sensor')
@@ -209,6 +235,13 @@ try:
     while sht is not None:
         # enable the device LED to show we're alive
         led.on()
+
+        # periodic time (re)sync; this blocks for a few seconds, during which
+        # the relays simply hold their current state
+        if netclock is not None and netclock.due():
+            netclock.sync()
+
+        minutes = localMinutes()
 
         display.clear() # soft clear; minimize 1602 flicker
 
@@ -231,12 +264,17 @@ try:
                         current = relay.value()
                         target = current # assume no change
 
+                        zone = x["schedule"].active(minutes)
+                        if zone is not x["zone"]:
+                            print(f'{x["name"]} at {format_minutes(minutes)}: using {zone.label} (on {zone.on}, off {zone.off})')
+                            x["zone"] = zone
+
                         # logic here is absurdly simple latch; we don't need to be clever
                         if current is True:
-                            if val >= x["off"]:
+                            if val >= zone.off:
                                 target = False
                         else:
-                            if val <= x["on"]:
+                            if val <= zone.on:
                                 target = True
 
                         status = statusString(target)
@@ -246,7 +284,7 @@ try:
                             print(f'{x["name"]} now {statusString(relay.value())}')
 
                     unit = x["unit"]
-                    display.text(f'{x["label"]}: {round(val, 1)} {unit} {status}', 2)
+                    print(f'{x["label"]}: {round(val, 1)} {unit} {status}') # console (was row 2, which overdrew the CPU line on ssd1306)
                     unit = unit.replace("°", chr(223)) # fix code-page
                     display.text(f'{x["label"]}: {round(val, 1)} {unit} {status}', idx)
                 except:

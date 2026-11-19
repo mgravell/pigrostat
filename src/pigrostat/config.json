@@ -1,6 +1,12 @@
 {
   "delay": 1.0,
 
+  "clock": {
+    "utc_offset": 0,
+    "dst": "eu",
+    "trust_rtc": false
+  },
+
   "sensor": {
      "sda": 0,
      "scl": 1,
@@ -12,7 +18,7 @@
          "unit": "°C",
          "relay": null,
          "on": 30,
-         "off": 35,
+         "off": 35
        },
        {
          "name": "Humidity",
@@ -21,6 +27,10 @@
          "relay": [7],
          "on": 60,
          "off": 65,
+         "_schedule": [
+           { "from": "07:00", "on": 70, "off": 75 },
+           { "from": "21:30", "on": 55 }
+         ]
        }
      ]
   },
@@ -28,7 +38,7 @@
     "type": "lcd1602",
     "sda": 4,
     "scl": 5,
-    "addr": 63,
+    "addr": 63
   },
   "_display": {
     "type": "ssd1306",
@@ -36,6 +46,6 @@
     "height": 32,
     "sda": 0,
     "scl": 1,
-    "addr": 60,
+    "addr": 60
   }
 }

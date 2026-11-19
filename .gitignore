@@ -162,3 +162,6 @@ cython_debug/
 bin/
 obj/
 .vs
+
+# local network settings (WiFi password etc); copy from network.example.json
+network.json

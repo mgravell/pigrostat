@@ -1,0 +1,14 @@
+{
+    "ssid": "yournetwork",
+    "password": "please",
+    "hostname": "pigrostat",
+    "country": "GB",
+    "ntp_host": "pool.ntp.org",
+    "sync_hours": 6,
+    "retry_minutes": 5,
+    "connect_timeout": 15,
+    "stay_connected": false,
+
+    "send_ip": "A.B.C.D",
+    "send_port": 62212
+}
